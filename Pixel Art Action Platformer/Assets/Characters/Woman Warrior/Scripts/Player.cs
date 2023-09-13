@@ -8,8 +8,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private List<BaseBehavior> behaviorsList;
     [SerializeField] private BaseBehavior currentBehavior;
-    [SerializeField] private Animator anim;
-    [SerializeField] public Rigidbody2D rb;
+    [SerializeField] private Components components;
+    
 
     [SerializeField] public bool isGrounded;
 
@@ -18,31 +18,31 @@ public class Player : MonoBehaviour
         Idle,
         Runing,
         Jump,
-        Attack,
-        Fall
-        
+        Fall,
+        Attack
     }
-
     private Behaviors Behavior
     {
-        get { return (Behaviors)anim.GetInteger("behavior"); }
-        set { anim.SetInteger("behavior", (int)value); }
+        get { return (Behaviors)components.anim.GetInteger("behavior"); }
+        set { components.anim.SetInteger("behavior", (int)value); }
     }
 
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        components = GetComponent<Components>();
+
         isGrounded = true;
-        anim = GetComponent<Animator>();
+      
         behaviorsList = new List<BaseBehavior>()
         {
-           GetComponent<PlayerBehaviorIdle>(),
-           GetComponent<PlayerBehaviorRunning>(),
-           GetComponent<PlayerBehaviorJump>(),
-           GetComponent<PlayerBehaviorAttack>()
+           GetComponent<IdlePlayerBehavior>(),
+           GetComponent<RunningPlayerBehavior>(),
+           GetComponent<JumpPlayerBehavior>(),
+           GetComponent<FallPlayerBehavior>(),
+           GetComponent<AttackPlayerBehavior>()
         };
-        SetBehavior(behaviorsList[(int)Behaviors.Idle]);
+        SetBehaviorIdle();
     }
 
 	private void SetBehavior(BaseBehavior newBehavior)
@@ -59,7 +59,6 @@ public class Player : MonoBehaviour
 
     public void SetBehaviorRuning()
     {
-        
         var behavior = behaviorsList[(int)Behaviors.Runing];
         Behavior = Behaviors.Runing;
         this.SetBehavior(behavior);
@@ -67,7 +66,9 @@ public class Player : MonoBehaviour
 
     public void SetBehaviorIdle()
     {
+        var behavior = behaviorsList[(int)Behaviors.Idle];
         Behavior = Behaviors.Idle;
+        this.SetBehavior(behavior);
     }
 
     public void SetBehaviorAttack()
@@ -86,6 +87,8 @@ public class Player : MonoBehaviour
 
     public void SetBehaviorFall()
     {
+        var behavior = behaviorsList[(int)Behaviors.Fall];
         Behavior = Behaviors.Fall;
+        this.SetBehavior(behavior);
     }
 }
