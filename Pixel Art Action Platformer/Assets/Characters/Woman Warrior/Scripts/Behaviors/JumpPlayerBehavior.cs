@@ -6,7 +6,7 @@ public class JumpPlayerBehavior : BaseBehavior
 {
     [SerializeField] private float jumpForce;
 
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerBehaviorSetter player;
     [SerializeField] private Components components;
     [SerializeField] private InputController controller;
 
@@ -15,7 +15,7 @@ public class JumpPlayerBehavior : BaseBehavior
 		jumpForce = 500;
         components = GetComponent<Components>();
         controller = GetComponent<InputController>();
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerBehaviorSetter>();
     }
 
     public override void Enter()
@@ -24,17 +24,16 @@ public class JumpPlayerBehavior : BaseBehavior
         controller.enabled = false;
     }
 
-    public override void Exit()
+	public override void Update()
+	{
+        if (components.rb.velocity.y < 0)
+            player.SetBehaviorFall();
+    }
+
+	public override void Exit()
     {
         controller.enabled = true;
         this.enabled = false;
     } 
-    
-	public override void Update()
-	{
-        if (components.rb.velocity.y < 0) 
-            player.SetBehaviorFall();
-    }
-
 	private void Jump() => components.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
 }

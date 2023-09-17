@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerBehaviorSetter player;
 	[SerializeField] private Components components;
 
 	private void Awake()
 	{
-		player = GetComponentInParent<Player>();
+		player = GetComponentInParent<PlayerBehaviorSetter>();
 		components = GetComponent<Components>();
 	} 
 
@@ -21,8 +21,6 @@ public class GroundCheck : MonoBehaviour
 	private void OnTriggerExit2D(Collider2D collision)
 	{
 		if (collision.gameObject.tag.Equals("Ground")) player.isGrounded = false;
-		if (components.rb.velocity.y < 0) player.SetBehaviorFall();
-		
 	}
 
 }

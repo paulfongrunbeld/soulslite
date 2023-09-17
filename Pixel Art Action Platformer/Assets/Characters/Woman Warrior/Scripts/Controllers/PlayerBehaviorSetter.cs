@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Player : MonoBehaviour
+public class PlayerBehaviorSetter : MonoBehaviour
 {
     [SerializeField] private List<BaseBehavior> behaviorsList;
     [SerializeField] private BaseBehavior currentBehavior;
@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
         Runing,
         Jump,
         Fall,
-        Attack
+        Attack,
+        Slide
     }
     private Behaviors Behavior
     {
@@ -40,7 +41,8 @@ public class Player : MonoBehaviour
            GetComponent<RunningPlayerBehavior>(),
            GetComponent<JumpPlayerBehavior>(),
            GetComponent<FallPlayerBehavior>(),
-           GetComponent<AttackPlayerBehavior>()
+           GetComponent<AttackPlayerBehavior>(),
+           GetComponent<SlidePlayerBehavior>()
         };
         SetBehaviorIdle();
     }
@@ -91,4 +93,13 @@ public class Player : MonoBehaviour
         Behavior = Behaviors.Fall;
         this.SetBehavior(behavior);
     }
+
+    public void SetBehaviorSlide()
+    {
+        var behavior = behaviorsList[(int)Behaviors.Slide];
+        Behavior = Behaviors.Slide;
+        this.SetBehavior(behavior);
+    }
+
+
 }
